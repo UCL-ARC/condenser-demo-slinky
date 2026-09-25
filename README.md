@@ -26,7 +26,11 @@ The following instructions refer to three different clusters. They are:
 
 Access to Condenser and sufficient resource quota to deploy 3 VMs each with 4 CPU, 16 Gi RAM, and 30 Gi volumes.
 
+Terraform must be installed on the computer that will deploy this module.
+
 Ansible, later than version 2.16.0, must be installed on the computer where Terraform runs to use the `terraform-harvester-modules/k3s-cluster` module.
+
+The `kubectl` tool is useful to have to monitor resources on Condenser, but not strictly necessary.
 
 ## Deploying the k3s cluster on Condenser VMs
 
@@ -204,7 +208,13 @@ ssh -J condenser -i id_slurm -o StrictHostKeyChecking=no -o UserKnownHostsFile=/
 
 Where `id_slurm` is the private key file which is managed by Terraform, and `<SLURM LOGIN IP>` is the IP address that you provided in the module configuration. When passed to the `terraform-harvester-modules/k3s-cluster` module, it is assigned to an extra ingress service for Slurm.
 
-After logging in you can run commands such as `sinfo`, `sacct`, and `srun hostname` to explore the Slurm cluster. The basic configuration provided in `slurm.yaml` enables all partitions and sets up a Slurm cluster with one worker. To learn more about the configuration options for the Helm chart values provided in `slurm.yaml`, check out the [Slinky installation guide](https://slinky.schedmd.com/slurm-operator/v1.2.0/installation.html).
+After logging in you can run commands such as `sinfo`, `sacct`, and `srun hostname` to explore the Slurm cluster. The basic configuration provided in `slurm.yaml` enables all partitions, enables root SSH access to the login service, and sets up a Slurm cluster with one worker.
+
+## Starting points for further development
+
+To more easily manage or monitor the k3s cluster, you can set up an SSH tunnel to the cluster VMs, download the kubeconfig file for the k3s cluster, and modify it to route through the tunnel.
+
+To learn more about the configuration options for the Helm chart values provided in `slurm.yaml`, check out the [Slinky installation guide](https://slinky.schedmd.com/slurm-operator/v1.2.0/installation.html).
 
 If you want to observe the `slurm.conf` data, this is stored in a ConfigMap on the k3s cluster. You can take a look at the relevant resource using `k get configmap -A`. Check out the Slurm documentation to learn more about the [options configured in `slurm.conf`](https://slurm.schedmd.com/slurm.conf.html).
 
