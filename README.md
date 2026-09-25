@@ -12,7 +12,7 @@ The toolchain goes something like:
 Slurm > Slinky > k3s > Harvester
 ```
 
-This module uses the [terraform-harvester-modules](https://github.com/UCL-ARC/terraform-harvester-modules/blob/main/README.md#k3s-cluster-module) k3s cluster module to deploy a small k3s cluster with 3 control plane nodes. Then a yaml file is installed to configure the Slurm operator. Several CRDs and the Slurm operator are installed with Helm. Then the Slurm cluster is ready to operate.
+This module uses the [terraform-harvester-modules](https://github.com/UCL-ARC/terraform-harvester-modules/blob/main/README.md#k3s-cluster-module) k3s cluster module to deploy a small k3s cluster with 3 control plane nodes. Then a YAML file is installed to configure the Slurm operator. Several CRDs and the Slurm operator are installed with Helm. Then the Slurm cluster is ready to operate.
 
 ### Terminology
 
@@ -113,7 +113,7 @@ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 Then log out of the VM. These additions will ensure that kubectl is available and configured with the kubeconfig file for the k3s cluster when you log in to the root account of the k3s cluster VM.
 
-On your local computer, the terraform module will have created a file in the repository root titled `slurm.yaml`. The contents of the file will be:
+On your local computer, the Terraform module will have created a file in the repository root titled `slurm.yaml`. The contents of the file will be:
 
 ```yaml
 ---
@@ -202,7 +202,7 @@ This minimal configuration has set up a Slurm cluster with one worker and a logi
 ssh -J condenser -i id_slurm -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@<SLURM LOGIN IP>
 ```
 
-Where `id_slurm` is the private key file which is managed by terraform, and `<SLURM LOGIN IP>` is the IP address that you provided in the module configuration. When passed to the `terraform-harvester-modules/k3s-cluster` module, it is assigned to an extra ingress service for Slurm.
+Where `id_slurm` is the private key file which is managed by Terraform, and `<SLURM LOGIN IP>` is the IP address that you provided in the module configuration. When passed to the `terraform-harvester-modules/k3s-cluster` module, it is assigned to an extra ingress service for Slurm.
 
 After logging in you can run commands such as `sinfo`, `sacct`, and `srun hostname` to explore the Slurm cluster. The basic configuration provided in `slurm.yaml` enables all partitions and sets up a Slurm cluster with one worker. To learn more about the configuration options for the Helm chart values provided in `slurm.yaml`, check out the [Slinky installation guide](https://slinky.schedmd.com/slurm-operator/v1.2.0/installation.html).
 
