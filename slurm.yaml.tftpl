@@ -1,0 +1,17 @@
+---
+{
+  partitions: {
+    all: {
+      enabled: true,
+    },
+  },
+  nodesets: {
+    slinky: {},
+  },
+  loginsets: {
+    slinky: {
+      enabled: true,
+      rootSshAuthorizedKeys: "${public_key}",
+    },
+  },
+}
