@@ -98,7 +98,7 @@ ssh -J condenser \
   almalinux@<K3S NODE IP>
 ```
 
-Where `<K3S NODE IP>` is one of the node IP addresses you assigned to the k3s cluster VMs.
+Where `<K3S NODE IP>` is one of the node IP addresses you assigned to the k3s cluster VMs that you provided in the `terraform.tfvars` file.
 
 While logged in to the VM, escalate your privileges and edit the bashrc file.
 
@@ -203,10 +203,12 @@ Use `kubectl` to monitor the deployments in the `slurm` and `slinky` namespaces.
 This minimal configuration has set up a Slurm cluster with one worker and a login service that can be accessed by SSH. You can run the following command from the root of the repository to access the Slurm cluster login service:
 
 ```sh
-ssh -J condenser -i id_slurm -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@<SLURM LOGIN IP>
+ssh -J condenser -i id_slurm \
+  -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+  root@<SLURM LOGIN IP>
 ```
 
-Where `id_slurm` is the private key file which is managed by Terraform, and `<SLURM LOGIN IP>` is the IP address that you provided in the module configuration. When passed to the `terraform-harvester-modules/k3s-cluster` module, it is assigned to an extra ingress service for Slurm.
+Where `id_slurm` is the private key file which is managed by Terraform, and `<SLURM LOGIN IP>` is the IP address that you provided in the `terraform.tfvars` file. When passed to the `terraform-harvester-modules/k3s-cluster` module, it is assigned to an extra ingress service for Slurm.
 
 After logging in you can run commands such as `sinfo`, `sacct`, and `srun hostname` to explore the Slurm cluster. The basic configuration provided in `slurm.yaml` enables all partitions, enables root SSH access to the login service, and sets up a Slurm cluster with one worker.
 
