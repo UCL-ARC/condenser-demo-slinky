@@ -12,7 +12,7 @@ The toolchain goes something like:
 Slurm > Slinky > k3s > Harvester
 ```
 
-This module uses the [terraform-harvester-modules](https://github.com/UCL-ARC/terraform-harvester-modules/blob/main/README.md#k3s-cluster-module) k3s cluster module to deploy a small k3s cluster with 3 control plane nodes. Then a yaml file is installed to configure the Slurm operator. Several CRDs and the Slurm operator are installed with Helm. Then the cluster is ready to operate.
+This module uses the [terraform-harvester-modules](https://github.com/UCL-ARC/terraform-harvester-modules/blob/main/README.md#k3s-cluster-module) k3s cluster module to deploy a small k3s cluster with 3 control plane nodes. Then a yaml file is installed to configure the Slurm operator. Several CRDs and the Slurm operator are installed with Helm. Then the Slurm cluster is ready to operate.
 
 ### Terminology
 
@@ -31,7 +31,7 @@ Ansible, later than version 2.16.0, must be installed on the computer where Terr
 ## Deploying the k3s cluster on Condenser VMs
 
 > [!NOTE]  
-> You do not need to use the `terraform-harvester-modules/k3s-cluster` module; you can create some VMs and [follow the k3s documentation](https://docs.k3s.io/installation) to create a kubernetes cluster, then pick up these instructions from the next section. However the module is a useful example because the cluster will be configured correctly. You can [take a look at the module](https://github.com/UCL-ARC/terraform-harvester-modules/tree/main/modules/k3s-cluster) to see how the cluster is set up.
+> You do not need to use the `terraform-harvester-modules/k3s-cluster` module; you can create some VMs and [follow the k3s documentation](https://docs.k3s.io/installation) to create a kubernetes cluster, then pick up these instructions from the next section. However the module is a useful example because the k3s cluster will be configured correctly. You can [take a look at the module](https://github.com/UCL-ARC/terraform-harvester-modules/tree/main/modules/k3s-cluster) to see how the k3s cluster is set up.
 
 Configure the `KUBECONFIG` variable with your kubeconfig file, e.g.:
 
@@ -77,14 +77,14 @@ TASK [Wait for VM] *************************************************************
 
 Then you can try `terraform apply` again. You may need to apply a few times before the configuration succeeds. Ansible makes immutable configuration changes, which means that it is safe to apply over again.
 
-Check that the cluster is correctly deployed:
+Check that the k3s cluster is correctly deployed:
 
 1. In your namespace on Condenser, three VMs have been deployed named `slurm-infra-control-[0,1,2]`. Each VM has an IPv4 address that starts with `10.134`.
 1. Terraform reports a successful application of all resources after running `terraform apply`.
 
 ## Installing the `slurm.yaml` configuration file
 
-After the cluster is deployed you can log onto it like so:
+After the k3s cluster is deployed you can log onto it like so:
 
 ``` sh
 # From your local computer
@@ -94,7 +94,7 @@ ssh -J condenser \
   almalinux@<K3S NODE IP>
 ```
 
-Where `<K3S NODE IP>` is one of the node IP addresses you assigned to the cluster VMs.
+Where `<K3S NODE IP>` is one of the node IP addresses you assigned to the k3s cluster VMs.
 
 While logged in to the VM, escalate your privileges and edit the bashrc file.
 
@@ -111,7 +111,7 @@ alias k=/usr/local/bin/kubectl
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 ```
 
-Then log out of the VM. These additions will ensure that kubectl is available and configured with the kubeconfig file for the k3s cluster when you log in to the root account of the cluster VM.
+Then log out of the VM. These additions will ensure that kubectl is available and configured with the kubeconfig file for the k3s cluster when you log in to the root account of the k3s cluster VM.
 
 On your local computer, the terraform module will have created a file in the repository root titled `slurm.yaml`. The contents of the file will be:
 
@@ -136,7 +136,9 @@ On your local computer, the terraform module will have created a file in the rep
 
 ```
 
-Where `<SSH PUBLIC KEY>` is the SSH public key data for a key pair managed by Terraform. This key pair will be used to access the Slurm cluster. Use SCP to copy this file onto the cluster:
+Where `<SSH PUBLIC KEY>` is the SSH public key data for a key pair managed by Terraform. This key pair will be used to access the Slurm cluster. This file contains Helm chart values for configuring the Slurm Helm chart.
+
+Use SCP to copy this file onto the k3s cluster:
 
 ``` sh
 # On your local computer
@@ -194,7 +196,7 @@ Use `kubectl` to monitor the deployments in the `slurm` and `slinky` namespaces.
 
 ## Checking out Slurm
 
-This minimal configuration has set up a Slurm cluster with one worker and a login service that can be accessed by SSH. You can run the following command from the root of the repository to access the cluster login service:
+This minimal configuration has set up a Slurm cluster with one worker and a login service that can be accessed by SSH. You can run the following command from the root of the repository to access the Slurm cluster login service:
 
 ```sh
 ssh -J condenser -i id_slurm -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@<SLURM LOGIN IP>
