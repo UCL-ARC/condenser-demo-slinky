@@ -232,35 +232,45 @@ If you want to observe the `slurm.conf` data, this is stored in a ConfigMap on t
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.5 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.9.0 |
+| <a name="requirement_harvester"></a> [harvester](#requirement\_harvester) | ~> 1.7.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.9.0 |
+| <a name="provider_local"></a> [local](#provider\_local) | n/a |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_k3s_cluster"></a> [k3s\_cluster](#module\_k3s\_cluster) | github.com/UCL-ARC/terraform-harvester-modules//modules/k3s-cluster | 0.0.41 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [random_id.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [local_file.slurm_conf](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_sensitive_file.slurm_private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
+| [tls_private_key.slurm_cluster_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | A dummy prefix. | `string` | `"my-test"` | no |
+| <a name="input_k3s_api_vip"></a> [k3s\_api\_vip](#input\_k3s\_api\_vip) | IPv4 address for the k3s cluster VIP. | `string` | n/a | yes |
+| <a name="input_k3s_dns_ip"></a> [k3s\_dns\_ip](#input\_k3s\_dns\_ip) | IPv4 address for the network's DNS server. | `string` | n/a | yes |
+| <a name="input_k3s_gateway_ip"></a> [k3s\_gateway\_ip](#input\_k3s\_gateway\_ip) | IPv4 address for the network's router. | `string` | n/a | yes |
+| <a name="input_k3s_namespace"></a> [k3s\_namespace](#input\_k3s\_namespace) | Namespace to deploy the cluster node VMs in. | `string` | n/a | yes |
+| <a name="input_k3s_network"></a> [k3s\_network](#input\_k3s\_network) | Network for the cluster VMs to use. namespace/network\_name | `string` | n/a | yes |
+| <a name="input_k3s_node_ips"></a> [k3s\_node\_ips](#input\_k3s\_node\_ips) | IPv4 addresses for the k3s cluster nodes. | `list(string)` | n/a | yes |
+| <a name="input_k3s_ssh_common_args"></a> [k3s\_ssh\_common\_args](#input\_k3s\_ssh\_common\_args) | Arguments for SSH that enable Ansible to connect from the Terraform agent to the k3s cluster node VMs. | `string` | n/a | yes |
+| <a name="input_slurm_login_ip"></a> [slurm\_login\_ip](#input\_slurm\_login\_ip) | IPv4 address for the Slurm cluster login service. | `string` | n/a | yes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_random_val"></a> [random\_val](#output\_random\_val) | List your outputs here. |
+No outputs.
 
 ---
 <!-- END_TF_DOCS -->
