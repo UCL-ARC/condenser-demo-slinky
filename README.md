@@ -220,6 +220,12 @@ To learn more about the configuration options for the Helm chart values provided
 
 If you want to observe the `slurm.conf` data, this is stored in a ConfigMap on the k3s cluster. You can take a look at the relevant resource using `k get configmap -A`. Check out the Slurm documentation to learn more about the [options configured in `slurm.conf`](https://slurm.schedmd.com/slurm.conf.html).
 
+### Further reading
+
+- [kubernetes](https://kubernetes.io/docs/home/)
+- [k3s](https://docs.k3s.io/)
+- [Helm](https://helm.sh/docs)
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
