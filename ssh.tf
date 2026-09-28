@@ -6,7 +6,7 @@ resource "tls_private_key" "slurm_cluster_key" {
 
 # Add the public key to the slurm helm chart values file
 
-resource "local_file" "slurm_conf" {
+resource "local_file" "slurm_helm_vals" {
   content = templatefile(
     "${path.module}/slurm.yaml.tftpl",
     {
