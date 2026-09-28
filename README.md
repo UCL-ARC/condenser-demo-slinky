@@ -233,13 +233,15 @@ If you want to observe the `slurm.conf` data, this is stored in a ConfigMap on t
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.5 |
 | <a name="requirement_harvester"></a> [harvester](#requirement\_harvester) | ~> 1.7.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | ~> 2.9.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 4.3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_local"></a> [local](#provider\_local) | n/a |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
+| <a name="provider_local"></a> [local](#provider\_local) | ~> 2.9.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | ~> 4.3.0 |
 
 ## Modules
 
@@ -251,7 +253,7 @@ If you want to observe the `slurm.conf` data, this is stored in a ConfigMap on t
 
 | Name | Type |
 |------|------|
-| [local_file.slurm_conf](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_file.slurm_helm_vals](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [local_sensitive_file.slurm_private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
 | [tls_private_key.slurm_cluster_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 
